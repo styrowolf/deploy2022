@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.RobotMap;
@@ -13,11 +14,13 @@ import frc.robot.RobotMap;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
-  VictorSP intakeMaster = new VictorSP(RobotMap.INTAKE_MASTER);
-  VictorSP intakeSlave = new VictorSP(RobotMap.INTAKE_SLAVE);
-  MotorControllerGroup motors = new MotorControllerGroup(intakeMaster, intakeSlave);
+  //TODO: check to see if Victor SPX motorcontrollers can be used as the master controller.
+  public final VictorSPX intakeMaster = new VictorSPX(RobotMap.INTAKE_MASTER);
+  public final VictorSPX intakeSlave = new VictorSPX(RobotMap.INTAKE_SLAVE);
 
-  public Intake() {}
+  public Intake() {
+    intakeSlave.follow(intakeMaster);
+  }
 
   @Override
   public void periodic() {
@@ -26,10 +29,10 @@ public class Intake extends SubsystemBase {
 
   public void setIntakeSpeed(double speed) {
     // -1.0 <= speed <= 1.0
-    motors.set(speed);
+    intakeMaster.set(ControlMode.PercentOutput, speed);
   }
 
   public double getMotorSpeed() {
-    return motors.get();
+    return intakeMaster.getMotorOutputPercent();
   }
 }
