@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,8 +15,8 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
   //TODO: check to see if Victor SPX motorcontrollers can be used as the master controller.
-  public final VictorSPX intakeMaster = new VictorSPX(RobotMap.INTAKE_MASTER);
-  public final VictorSPX intakeSlave = new VictorSPX(RobotMap.INTAKE_SLAVE);
+  public final WPI_VictorSPX intakeMaster = new WPI_VictorSPX(RobotMap.INTAKE_MASTER);
+  public final WPI_VictorSPX intakeSlave = new WPI_VictorSPX(RobotMap.INTAKE_SLAVE);
 
   public Intake() {
     intakeSlave.follow(intakeMaster);
