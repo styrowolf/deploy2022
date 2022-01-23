@@ -15,7 +15,7 @@ public class Elevator extends SubsystemBase {
   public WPI_VictorSPX elevatorSlaveRight = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_RIGHT);
   public WPI_VictorSPX elevatorSlaveLeft = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_LEFT);
 
-  public enum ElevatorStateMachine{
+  public enum ElevatorStateMachine {
     DISABLED,
     MANUAL,
     PID
@@ -33,8 +33,11 @@ public class Elevator extends SubsystemBase {
   
   }
 
-  public void setElevatorMotor(double speed) {
+  public void setElevatorMotorSpeedRight(double speed) {
     elevatorMasterRight.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setElevatorMotorSpeedLeft(double speed) {
     elevatorMasterLeft.set(ControlMode.PercentOutput, speed);
   }
 
