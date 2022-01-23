@@ -19,7 +19,6 @@ public class Elevator extends SubsystemBase {
     DISABLED,
     MANUAL,
     PID
-
   }
 
   public Elevator() {
