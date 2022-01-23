@@ -12,6 +12,7 @@ public class Elevator extends SubsystemBase {
   
   public WPI_TalonSRX elevatorMasterRight = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_RIGHT);
   public WPI_TalonSRX elevatorMasterLeft = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_LEFT);
+  
   public WPI_VictorSPX elevatorSlaveRight = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_RIGHT);
   public WPI_VictorSPX elevatorSlaveLeft = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_LEFT);
 
