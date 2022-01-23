@@ -3,8 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+
 import frc.robot.RobotMap;
 import frc.robot.constants.DriveConst;
+
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -29,7 +31,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends SubsystemBase {
 
-
   //TODO: set deviceNumbers
   private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(0);
   private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(0);
@@ -39,21 +40,16 @@ public class Drive extends SubsystemBase {
   private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(0);
   private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(0);
   
- 
   MotorControllerGroup rightMotors = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
   MotorControllerGroup leftMotors = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
 
- 
   private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
-  
 
   public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d());
 
   PIDController turnController = new PIDController(0.0, 0.0, 0.0);
   
   AHRS navX = new AHRS(RobotMap.navX);
-
-
 
   public Drive() {
 
@@ -85,76 +81,78 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Right Wheel velocity;", toMeters(getEncoderVel(rightMaster)));
     SmartDashboard.putNumber("Left Wheel velocity;", toMeters(getEncoderVel(leftMaster)));
   }
-//
-    //Movement Commands
-    //
+  
+  //
+  //Movement Commands
+  //
 
-    public void setMaxOutput(double maxOutput) {
-      differentialDrive.setMaxOutput(maxOutput);
+  public void setMaxOutput(double maxOutput) {
+    differentialDrive.setMaxOutput(maxOutput);
   }
 
   public void arcadeDrive(double fwd, double rot) {
-      differentialDrive.arcadeDrive(fwd, rot);
+    differentialDrive.arcadeDrive(fwd, rot);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-      leftMotors.setVoltage(leftVolts);
-      rightMotors.setVoltage(-rightVolts);
-      differentialDrive.feed();
+    leftMotors.setVoltage(leftVolts);
+    rightMotors.setVoltage(-rightVolts);
+    differentialDrive.feed();
   }
 
   public void PIDTurn(double rotSpeed, double targetAngle) {
-      arcadeDrive(rotSpeed, MathUtil.clamp(turnController.calculate(getHeading(), targetAngle), -0.8, 0.8));
+    arcadeDrive(rotSpeed, MathUtil.clamp(turnController.calculate(getHeading(), targetAngle), -0.8, 0.8));
   }
-    //
-    //Resets
-    //
+  
+  //
+  //Resets
+  //
 
-    public void resetOdometry(Pose2d pose) {
-      resetEncoders();
-      odometry.resetPosition(pose, new Rotation2d(0.0));
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    odometry.resetPosition(pose, new Rotation2d(0.0));
   }
 
   public void resetEncoders() {
-      rightMaster.setSelectedSensorPosition(0);
-      leftMaster.setSelectedSensorPosition(0);
+    rightMaster.setSelectedSensorPosition(0);
+    leftMaster.setSelectedSensorPosition(0);
   }
 
   public void zeroHeading() {
-      navX.reset();
+    navX.reset();
   }
 
-//
-    //Getter Commands
-    //
+  //
+  //Getter Commands
+  //
 
-    public double getEncoderPos(TalonSRX encoder) {
-      return encoder.getSelectedSensorPosition();
+  public double getEncoderPos(TalonSRX encoder) {
+    return encoder.getSelectedSensorPosition();
   }
 
   public double getEncoderVel(TalonSRX encoder) {
-      return encoder.getSelectedSensorVelocity();
+    return encoder.getSelectedSensorVelocity();
   }
 
   public Pose2d getPose() {
-      return odometry.getPoseMeters();
-    }
+    return odometry.getPoseMeters();
+  }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-      return new DifferentialDriveWheelSpeeds(
-          toMetersPerSec(rightMaster.getSelectedSensorVelocity()), toMetersPerSec(leftMaster.getSelectedSensorVelocity()));
+    return new DifferentialDriveWheelSpeeds(
+      toMetersPerSec(rightMaster.getSelectedSensorVelocity()), toMetersPerSec(leftMaster.getSelectedSensorVelocity()));
   }
   
   public double getAverageEncoderDistance() {
-      return (toMeters(getEncoderPos(rightMaster)) + toMeters(getEncoderPos(rightMaster)) / 2.0);
+    return (toMeters(getEncoderPos(rightMaster)) + toMeters(getEncoderPos(rightMaster)) / 2.0);
   }
 
   public double getHeading() {
-      return navX.getAngle();
+    return navX.getAngle();
   }
 
   public double getTurnRate() {
-      return -navX.getRate();
+    return -navX.getRate();
   }
 
   //
@@ -162,19 +160,19 @@ public class Drive extends SubsystemBase {
   //
 
   public double toMetersPerSec(double sensorVelocity) {
-      return sensorVelocity; // TODO: Designdan çark oranlarına bakılacak
+    return sensorVelocity; // TODO: Designdan çark oranlarına bakılacak
   }
 
   public double toSensorVel(double metersPerSec) {
-      return metersPerSec;
+    return metersPerSec;
   }
 
   public double toSensorUnits(double meters) {
-      return meters;
+    return meters;
   }
 
   public double toMeters(double sensorUnits) {
-      return sensorUnits;
+    return sensorUnits;
   }
 }
 
