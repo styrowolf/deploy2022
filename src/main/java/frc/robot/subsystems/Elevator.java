@@ -33,11 +33,11 @@ public class Elevator extends SubsystemBase {
   
   }
 
-  public void setElevatorMotorSpeedRight(double speed) {
+  public void setElevatorSpeedRight(double speed) {
     elevatorMasterRight.set(ControlMode.PercentOutput, speed);
   }
 
-  public void setElevatorMotorSpeedLeft(double speed) {
+  public void setElevatorSpeedLeft(double speed) {
     elevatorMasterLeft.set(ControlMode.PercentOutput, speed);
   }
 
