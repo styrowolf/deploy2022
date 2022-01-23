@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -80,6 +79,8 @@ public class Drive extends SubsystemBase {
     
     SmartDashboard.putNumber("Right Wheel velocity;", toMeters(getEncoderVel(rightMaster)));
     SmartDashboard.putNumber("Left Wheel velocity;", toMeters(getEncoderVel(leftMaster)));
+
+    odometry.update(navX.getRotation2d(), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
   }
   
   //
