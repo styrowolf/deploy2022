@@ -65,7 +65,7 @@ public class Drive extends SubsystemBase {
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
     
-    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(navX.getAngle()));
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-navX.getAngle()));
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
 
@@ -80,7 +80,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Right Wheel velocity;", toMeters(getEncoderVel(rightMaster)));
     SmartDashboard.putNumber("Left Wheel velocity;", toMeters(getEncoderVel(leftMaster)));
 
-    odometry.update(Rotation2d.fromDegrees(navX.getAngle()), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
+    odometry.update(Rotation2d.fromDegrees(-navX.getAngle()), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
   }
   
   //
@@ -155,7 +155,7 @@ public class Drive extends SubsystemBase {
   
   /* in degrees */
   public double getHeading() {
-    return navX.getAngle();
+    return new Rotation2d(-navX.getAngle()).getDegrees();
   }
   
   /* in degrees per second */
