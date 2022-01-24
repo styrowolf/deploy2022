@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.constants.DriveConst;
 import frc.robot.subsystems.Drive;
 
-public class ARC_trajectory {
+public class ARCTrajectory {
     public Trajectory[] rpos1 = new Trajectory[2];
     public Trajectory[] rpos2 = new Trajectory[2];
     public Trajectory[] lpos1 = new Trajectory[4];
@@ -23,28 +23,38 @@ public class ARC_trajectory {
     
     private Drive m_drive;
     
-    public ARC_trajectory(Drive drive){
-        m_drive=drive;
+    public ARCTrajectory (Drive drive) {
+        m_drive = drive;
+        
         var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                                new SimpleMotorFeedforward(DriveConst.ksVolts, DriveConst.kvVoltSecondsPerMeter,
-                                                DriveConst.kaVoltSecondsSquaredPerMeter),
-                                DriveConst.kDriveKinematics, 8); 
-        TrajectoryConfig configReversed = new TrajectoryConfig(DriveConst.kMaxSpeedMetersPerSecond,
-                                DriveConst.kMaxAccelerationMetersPerSecondSquared)
-                                                // Add kinematics to ensure max speed is actually obeyed
-                                                .setKinematics(DriveConst.kDriveKinematics)
-                                                // Apply the voltage constraint
-                                                .addConstraint(autoVoltageConstraint);
+            new SimpleMotorFeedforward(
+                DriveConst.ksVolts, 
+                DriveConst.kvVoltSecondsPerMeter, 
+                DriveConst.kaVoltSecondsSquaredPerMeter
+            ), 
+            DriveConst.kDriveKinematics, 8);
+
+        TrajectoryConfig configReversed = new TrajectoryConfig(
+            DriveConst.kMaxSpeedMetersPerSecond,
+            DriveConst.kMaxAccelerationMetersPerSecondSquared
+            )
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConst.kDriveKinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
 
         configReversed.setReversed(true);
 
-        TrajectoryConfig configForward = new TrajectoryConfig(DriveConst.kMaxSpeedMetersPerSecond,
-                                DriveConst.kMaxAccelerationMetersPerSecondSquared)
-                                                // Add kinematics to ensure max speed is actually obeyed
-                                                .setKinematics(DriveConst.kDriveKinematics)
-                                                // Apply the voltage constraint
-                                                .addConstraint(autoVoltageConstraint);
-        double divisor=1.0;
+        TrajectoryConfig configForward = new TrajectoryConfig(
+            DriveConst.kMaxSpeedMetersPerSecond,
+            DriveConst.kMaxAccelerationMetersPerSecondSquared
+            )
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConst.kDriveKinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
+        
+        double divisor = 1.0;
 
         rpos1[0] = TrajectoryGenerator.generateTrajectory(
             List.of(new Pose2d(13 / divisor, -5.8 / divisor, new Rotation2d(0)),
@@ -78,8 +88,22 @@ public class ARC_trajectory {
     } 
 
 
-    public RamseteCommand getRamsete(Trajectory traj){
-        return new RamseteCommand(traj, m_drive::getPose , new RamseteController(DriveConst.kRamseteB, DriveConst.kRamseteZeta), new SimpleMotorFeedforward(DriveConst.ksVolts, DriveConst.kvVoltSecondsPerMeter, DriveConst.kaVoltSecondsSquaredPerMeter), DriveConst.kDriveKinematics, m_drive::getWheelSpeeds, new PIDController(DriveConst.kPDriveVel, 0, 0), new PIDController(DriveConst.kPDriveVel, 0, 0), m_drive::tankDriveVolts, m_drive);
+    public RamseteCommand getRamsete(Trajectory trajectory) {
+        return new RamseteCommand(
+            trajectory, 
+            m_drive::getPose, 
+            new RamseteController(DriveConst.kRamseteB, DriveConst.kRamseteZeta), 
+            new SimpleMotorFeedforward(
+                DriveConst.ksVolts, 
+                DriveConst.kvVoltSecondsPerMeter, 
+                DriveConst.kaVoltSecondsSquaredPerMeter
+            ), 
+            DriveConst.kDriveKinematics, 
+            m_drive::getWheelSpeeds, 
+            new PIDController(DriveConst.kPDriveVel, 0, 0), 
+            new PIDController(DriveConst.kPDriveVel, 0, 0), 
+            m_drive::tankDriveVolts, 
+            m_drive
+        );       
     }
-
 }
