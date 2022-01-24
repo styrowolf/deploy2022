@@ -7,12 +7,12 @@ import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drive;
-import frc.robot.ARC_trajectory;
+import frc.robot.ARCTrajectory;
 
 
 public class rpos1 extends SequentialCommandGroup{
 
-    public rpos1(ARC_trajectory a_traj, Shooter shooter, Intake intake, Drive drive){ 
+    public rpos1(ARCTrajectory a_traj, Shooter shooter, Intake intake, Drive drive){ 
         super(new SetShooterRPMPF(2900, shooter, true),
         new SetShooterRPMPF(2900, shooter, false).withTimeout(1.5).raceWith(new RunHopper("sync", hopper)),
         a_traj.getRamsete(a_traj.rpos1[0])
