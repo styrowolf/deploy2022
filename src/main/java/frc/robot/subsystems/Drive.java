@@ -95,6 +95,10 @@ public class Drive extends SubsystemBase {
     differentialDrive.arcadeDrive(fwd, rot);
   }
 
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    differentialDrive.tankDrive(leftSpeed, rightSpeed);
+  }
+
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftMotors.setVoltage(leftVolts);
     rightMotors.setVoltage(-rightVolts);
