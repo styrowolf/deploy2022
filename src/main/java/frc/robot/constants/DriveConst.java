@@ -50,4 +50,6 @@ public class DriveConst {
   public static final double kRamseteZeta = 0.7;
 
   public static final double kPDriveVel = 8.5; //TODO: Configure
+
+  public static DifferentialDriveKinematics kDriveKinematics;//Check
 }
