@@ -30,11 +30,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends SubsystemBase {
 
   //TODO: set deviceNumbers
-  private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotMap.DRIVE_RIGHT_MASTER);
+  public final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotMap.DRIVE_RIGHT_MASTER);
   private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
   private final WPI_VictorSPX rightSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
 
-  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.DRIVE_LEFT_MASTER);
+  public final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.DRIVE_LEFT_MASTER);
   private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
   private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
   
