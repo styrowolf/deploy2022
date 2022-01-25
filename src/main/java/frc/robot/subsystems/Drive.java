@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -28,13 +29,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends SubsystemBase {
 
   //TODO: set deviceNumbers
-  private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(0);
-  private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(0);
-  private final WPI_VictorSPX rightSlave2 = new WPI_VictorSPX(0);
+  private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotMap.DRIVE_RIGHT_MASTER);
+  private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
+  private final WPI_VictorSPX rightSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
 
-  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(0);
-  private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(0);
-  private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(0);
+  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.DRIVE_LEFT_MASTER);
+  private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
+  private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
   
   MotorControllerGroup rightMotors = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
   MotorControllerGroup leftMotors = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
@@ -43,7 +44,7 @@ public class Drive extends SubsystemBase {
 
   public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d());
 
-  PIDController turnController = new PIDController(0.0, 0.0, 0.0);
+  PIDController turnController = new PIDController(DriveConst.kP, DriveConst.kI, DriveConst.kD);
   
   AHRS navX = new AHRS(RobotMap.navX);
 
@@ -52,17 +53,17 @@ public class Drive extends SubsystemBase {
     leftMotors.setInverted(true);
 
     rightMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
-      0 /* PID_LOOP_ID */, 0 /* timeoutMs */);
-    rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 0 /* timeoutMs */);
+      DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
+    rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
     
     leftMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
-      0 /* PID_LOOP_ID */, 0 /* timeoutMs */);
-    leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 0 /* timeoutMs */);
+      DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
+    leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
 
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
     
-    odometry = new DifferentialDriveOdometry(new Rotation2d(navX.getAngle() / 180 * Math.PI));
+    odometry = new DifferentialDriveOdometry(navX.getRotation2d());
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
 
@@ -90,6 +91,10 @@ public class Drive extends SubsystemBase {
 
   public void arcadeDrive(double fwd, double rot) {
     differentialDrive.arcadeDrive(fwd, rot);
+  }
+
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    differentialDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -124,11 +129,11 @@ public class Drive extends SubsystemBase {
   //Getter Commands
   //
 
-  public double getEncoderPos(WPI_TalonSRX encoder) {
+  public double getEncoderPos(TalonSRX encoder) {
     return encoder.getSelectedSensorPosition();
   }
 
-  public double getEncoderVel(WPI_TalonSRX encoder) {
+  public double getEncoderVel(TalonSRX encoder) {
     return encoder.getSelectedSensorVelocity();
   }
 
@@ -144,11 +149,13 @@ public class Drive extends SubsystemBase {
   public double getAverageEncoderDistance() {
     return (toMeters(getEncoderPos(rightMaster)) + toMeters(getEncoderPos(rightMaster)) / 2.0);
   }
-
+  
+  /* in degrees */
   public double getHeading() {
-    return navX.getAngle();
+    return navX.getRotation2d().getDegrees();
   }
-
+  
+  /* in degrees per second */
   public double getTurnRate() {
     return -navX.getRate();
   }

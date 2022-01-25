@@ -23,7 +23,7 @@ public class ARCTrajectory {
     
     private Drive m_drive;
     
-    public ARCTrajectory (Drive drive) {
+    public ARCTrajectory(Drive drive) {
         m_drive = drive;
         
         var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
