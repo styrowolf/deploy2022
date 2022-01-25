@@ -8,13 +8,13 @@ public class RobotMap {
     //
     public static final SPI.Port navX = SPI.Port.kMXP;
     
-    public static final int DRIVE_RIGHT_MASTER = 0;
-    public static final int DRIVE_RIGHT_SLAVE_1 = 0;
-    public static final int DRIVE_RIGHT_SLAVE_2 = 0;
+    public static final int DRIVE_RIGHT_MASTER = 20;
+    public static final int DRIVE_RIGHT_SLAVE_1 = 2;
+    public static final int DRIVE_RIGHT_SLAVE_2 = 6;
 
-    public static final int DRIVE_LEFT_MASTER = 0;
-    public static final int DRIVE_LEFT_SLAVE_1 = 0;
-    public static final int DRIVE_LEFT_SLAVE_2 = 0;
+    public static final int DRIVE_LEFT_MASTER = 8;
+    public static final int DRIVE_LEFT_SLAVE_1 = 3;
+    public static final int DRIVE_LEFT_SLAVE_2 = 5;
     //
     // Intake
     //

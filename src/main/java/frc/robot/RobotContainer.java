@@ -11,14 +11,8 @@ public class RobotContainer {
     
     private static final RobotContainer mRobotContainer = new RobotContainer();
 
-
-
-    public static Controller controller = new Controller();
-    public static Intake intake = new Intake();
+    public static Controller controller = Controller.getPS4Controller(0);
     public static Drive drive = new Drive();
-    public static Shooter shooter = new Shooter();
-    //public static Elevator elevator = new Elevator();
-
     public static AHRS navX = new AHRS(RobotMap.navX);
 
     SendableChooser<Command> m_chooser = new SendableChooser<Command>();
