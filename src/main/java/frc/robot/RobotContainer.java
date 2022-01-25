@@ -10,6 +10,7 @@ public class RobotContainer {
 
     public static Controller controller = new Controller();
     public static Intake intake = new Intake();
+    public static Drive drive = new Drive();
 
     SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 

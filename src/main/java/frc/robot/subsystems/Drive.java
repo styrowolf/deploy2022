@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -19,9 +18,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,13 +28,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive extends SubsystemBase {
 
   //TODO: set deviceNumbers
-  private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotMap.DRIVE_RIGHT_MASTER);
-  private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
-  private final WPI_VictorSPX rightSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
+  private final WPI_TalonSRX rightMaster = new WPI_TalonSRX(0);
+  private final WPI_VictorSPX rightSlave1 = new WPI_VictorSPX(0);
+  private final WPI_VictorSPX rightSlave2 = new WPI_VictorSPX(0);
 
-  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.DRIVE_LEFT_MASTER);
-  private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_1);
-  private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(RobotMap.DRIVE_LEFT_SLAVE_2);
+  private final WPI_TalonSRX leftMaster = new WPI_TalonSRX(0);
+  private final WPI_VictorSPX leftSlave1 = new WPI_VictorSPX(0);
+  private final WPI_VictorSPX leftSlave2 = new WPI_VictorSPX(0);
   
   MotorControllerGroup rightMotors = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
   MotorControllerGroup leftMotors = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
@@ -46,7 +43,7 @@ public class Drive extends SubsystemBase {
 
   public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d());
 
-  PIDController turnController = new PIDController(DriveConst.kP, DriveConst.kI, DriveConst.kD);
+  PIDController turnController = new PIDController(0.0, 0.0, 0.0);
   
   AHRS navX = new AHRS(RobotMap.navX);
 
@@ -55,17 +52,17 @@ public class Drive extends SubsystemBase {
     leftMotors.setInverted(true);
 
     rightMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
-      DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
-    rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
+      0 /* PID_LOOP_ID */, 0 /* timeoutMs */);
+    rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 0 /* timeoutMs */);
     
     leftMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
-      DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
-    leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
+      0 /* PID_LOOP_ID */, 0 /* timeoutMs */);
+    leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 0 /* timeoutMs */);
 
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
     
-    odometry = new DifferentialDriveOdometry(navX.getRotation2d());
+    odometry = new DifferentialDriveOdometry(new Rotation2d(navX.getAngle() / 180 * Math.PI));
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
 
@@ -95,17 +92,12 @@ public class Drive extends SubsystemBase {
     differentialDrive.arcadeDrive(fwd, rot);
   }
 
-  public void tankDrive(double leftSpeed, double rightSpeed) {
-    differentialDrive.tankDrive(leftSpeed, rightSpeed);
-  }
-
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftMotors.setVoltage(leftVolts);
     rightMotors.setVoltage(-rightVolts);
     differentialDrive.feed();
   }
 
-  /* targetAngle in degrees */
   public void PIDTurn(double rotSpeed, double targetAngle) {
     arcadeDrive(rotSpeed, MathUtil.clamp(turnController.calculate(getHeading(), targetAngle), -0.8, 0.8));
   }
@@ -132,11 +124,11 @@ public class Drive extends SubsystemBase {
   //Getter Commands
   //
 
-  public double getEncoderPos(TalonSRX encoder) {
+  public double getEncoderPos(WPI_TalonSRX encoder) {
     return encoder.getSelectedSensorPosition();
   }
 
-  public double getEncoderVel(TalonSRX encoder) {
+  public double getEncoderVel(WPI_TalonSRX encoder) {
     return encoder.getSelectedSensorVelocity();
   }
 
@@ -152,13 +144,11 @@ public class Drive extends SubsystemBase {
   public double getAverageEncoderDistance() {
     return (toMeters(getEncoderPos(rightMaster)) + toMeters(getEncoderPos(rightMaster)) / 2.0);
   }
-  
-  /* in degrees */
+
   public double getHeading() {
-    return navX.getRotation2d().getDegrees();
+    return navX.getAngle();
   }
-  
-  /* in degrees per second */
+
   public double getTurnRate() {
     return -navX.getRate();
   }

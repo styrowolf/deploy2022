@@ -9,4 +9,10 @@ public class Controller {
     public boolean getIntakeReverse() {
         return false;
     }
+    public double getDriveSpeed() {
+        return 0;
+    }
+    public double getDriveRotation() {
+        return 0;
+    }
 }
