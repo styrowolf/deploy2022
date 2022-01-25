@@ -11,23 +11,13 @@ public class RobotContainer {
     
     private static final RobotContainer mRobotContainer = new RobotContainer();
 
-    public static final int elevatorMaster = 0;
 
-    public static final int elevatorSlave = 0;
-
-    public static final int elevatorRightMaster = 0;
-
-    public static final int elevatorRightSlave = 0;
-
-    public static final int elevatorLeftMaster = 0;
-
-    public static final int elevatorLeftSlave = 0;
 
     public static Controller controller = new Controller();
     public static Intake intake = new Intake();
     public static Drive drive = new Drive();
     public static Shooter shooter = new Shooter();
-    public static Elevator elevator = new Elevator();
+    //public static Elevator elevator = new Elevator();
 
     public static AHRS navX = new AHRS(RobotMap.navX);
 

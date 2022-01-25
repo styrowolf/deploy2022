@@ -10,12 +10,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 import frc.robot.constants.ElevatorConst;
 
 public class Elevator extends SubsystemBase {
     
-    public final static WPI_TalonSRX elevatorMaster = new WPI_TalonSRX(RobotContainer.elevatorMaster);
-    public final static WPI_VictorSPX elevatorSlave = new WPI_VictorSPX(RobotContainer.elevatorSlave);
+    public final static WPI_TalonSRX elevatorMaster = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER);
+    public final static WPI_VictorSPX elevatorSlave = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE);
 
     private static double targetHeight;
 

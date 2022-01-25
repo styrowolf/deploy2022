@@ -11,15 +11,16 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 import frc.robot.constants.DElevatorConst;
 
 public class DoubleElevator extends SubsystemBase{
     
-    public static final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotContainer.elevatorRightMaster);
-    public static final WPI_VictorSPX rightSlave = new WPI_VictorSPX(RobotContainer.elevatorRightSlave);
+    public static final WPI_TalonSRX rightMaster = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_RIGHT);
+    public static final WPI_VictorSPX rightSlave = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_RIGHT);
 
-    public static final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotContainer.elevatorLeftMaster);
-    public static final WPI_VictorSPX leftSlave = new WPI_VictorSPX(RobotContainer.elevatorLeftSlave);
+    public static final WPI_TalonSRX leftMaster = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_LEFT);
+    public static final WPI_VictorSPX leftSlave = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_LEFT);
 
     private static double targetHeight_right;
     private static double targetHeight_left;
