@@ -75,5 +75,13 @@ public class Elevator extends SubsystemBase {
     public static void getToHeight(double height) {
 
     }
+    
+    public static void extendElevator() {
+        elevatorMaster.set(ControlMode.PercentOutput, 0.8);
+    }
+
+    public static void retractElevator() {
+      elevatorMaster.set(ControlMode.PercentOutput, -0.8);
+  }
 }
 

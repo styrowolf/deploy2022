@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.ResourceBundle.Control;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -126,4 +128,19 @@ public class DoubleElevator extends SubsystemBase{
 
     }
 
+    public static void extendElevator_Right() {
+        rightMaster.set(ControlMode.PercentOutput, 0.8);
+    }
+
+    public static void extendElevator_Left() {
+        leftMaster.set(ControlMode.PercentOutput, 0.8);
+    }
+
+    public static void retractElevator_Right() {
+        rightMaster.set(ControlMode.PercentOutput, -0.8);
+    }
+
+    public static void retractElevator_Left() {
+        leftMaster.set(ControlMode.PercentOutput, -0.8);
+    }
 }
