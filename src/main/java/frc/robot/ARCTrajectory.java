@@ -63,7 +63,7 @@ public class ARCTrajectory {
             configReversed); 
         
         
-        rpos2[0] = TrajectoryGenerator.generateTrajectory(
+        rpos2[1] = TrajectoryGenerator.generateTrajectory(
             List.of(new Pose2d(13 / divisor, -5.8 / divisor, new Rotation2d(0)),
                         new Pose2d(11.5 / divisor, -7.0 / divisor, new Rotation2d(0)),
                         new Pose2d(8 / divisor, -7.0 / divisor, new Rotation2d(0))),
@@ -77,7 +77,7 @@ public class ARCTrajectory {
             configReversed); 
         
         
-        lpos2[0] = TrajectoryGenerator.generateTrajectory(
+        lpos2[1] = TrajectoryGenerator.generateTrajectory(
             List.of(new Pose2d(13 / divisor, -5.8 / divisor, new Rotation2d(0)),
                         new Pose2d(11.5 / divisor, -7.0 / divisor, new Rotation2d(0)),
                         new Pose2d(8 / divisor, -7.0 / divisor, new Rotation2d(0))),
