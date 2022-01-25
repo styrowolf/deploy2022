@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 import frc.robot.constants.DriveConst;
 
@@ -13,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -45,8 +46,6 @@ public class Drive extends SubsystemBase {
   public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(new Rotation2d());
 
   PIDController turnController = new PIDController(DriveConst.kP, DriveConst.kI, DriveConst.kD);
-  
-  AHRS navX = new AHRS(RobotMap.navX);
 
   public Drive() {
 
@@ -63,7 +62,7 @@ public class Drive extends SubsystemBase {
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
     
-    odometry = new DifferentialDriveOdometry(navX.getRotation2d());
+    odometry = new DifferentialDriveOdometry(RobotContainer.navX.getRotation2d());
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
 
@@ -78,7 +77,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Right Wheel velocity;", toMeters(getEncoderVel(rightMaster)));
     SmartDashboard.putNumber("Left Wheel velocity;", toMeters(getEncoderVel(leftMaster)));
 
-    odometry.update(navX.getRotation2d(), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
+    odometry.update(RobotContainer.navX.getRotation2d(), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
   }
   
   //
@@ -122,7 +121,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void zeroHeading() {
-    navX.reset();
+    RobotContainer.navX.reset();
   }
 
   //
@@ -152,12 +151,12 @@ public class Drive extends SubsystemBase {
   
   /* in degrees */
   public double getHeading() {
-    return navX.getRotation2d().getDegrees();
+    return RobotContainer.navX.getRotation2d().getDegrees();
   }
   
   /* in degrees per second */
   public double getTurnRate() {
-    return -navX.getRate();
+    return -RobotContainer.navX.getRate();
   }
 
   //

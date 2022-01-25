@@ -1,53 +1,78 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.RobotMap;
+import frc.robot.RobotContainer;
+import frc.robot.constants.ElevatorConst;
 
 public class Elevator extends SubsystemBase {
-  
-  public WPI_TalonSRX elevatorMasterRight = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_RIGHT);
-  public WPI_TalonSRX elevatorMasterLeft = new WPI_TalonSRX(RobotMap.ELEVATOR_MASTER_LEFT);
-  
-  public WPI_VictorSPX elevatorSlaveRight = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_RIGHT);
-  public WPI_VictorSPX elevatorSlaveLeft = new WPI_VictorSPX(RobotMap.ELEVATOR_SLAVE_LEFT);
+    
+    public final static WPI_TalonSRX elevatorMaster = new WPI_TalonSRX(RobotContainer.elevatorMaster);
+    public final static WPI_VictorSPX elevatorSlave = new WPI_VictorSPX(RobotContainer.elevatorSlave);
 
-  public enum ElevatorStateMachine {
-    DISABLED,
-    MANUAL,
-    PID
-  }
+    private static double targetHeight;
 
-  public Elevator() {
-    elevatorSlaveRight.follow(elevatorMasterRight);
-    elevatorSlaveLeft.follow(elevatorMasterLeft);
+    public Elevator(double height, int kPIDLoopID, double kP, double kI, double kD, double kF) {
 
-    elevatorMasterLeft.setInverted(true);
-  }
+        elevatorSlave.follow(elevatorMaster);
 
-  @Override
-  public void periodic() {
-  
-  }
+        elevatorMaster.configForwardSoftLimitThreshold(ElevatorConst.fwdTreshold);
+        elevatorMaster.configReverseSoftLimitThreshold(ElevatorConst.fwdTreshold);
 
-  public void setElevatorSpeedRight(double speed) {
-    elevatorMasterRight.set(ControlMode.PercentOutput, speed);
-  }
+        elevatorMaster.configMotionCruiseVelocity(ElevatorConst.cruiseVelocity);
+        elevatorMaster.configMotionAcceleration(ElevatorConst.acceleration);
 
-  public void setElevatorSpeedLeft(double speed) {
-    elevatorMasterLeft.set(ControlMode.PercentOutput, speed);
-  }
+        elevatorMaster.configNeutralDeadband(ElevatorConst.neutralDeadband, ElevatorConst.timeout);
 
-  public double getMotorSpeedRight() {
-    return elevatorMasterRight.getMotorOutputPercent();
-  }
+        elevatorMaster.configNominalOutputForward(ElevatorConst.fwdNominalOutput);
+        elevatorMaster.configNominalOutputReverse(ElevatorConst.revNominalOutput);
 
-  public double getMotorSpeedLeft() {
-    return elevatorMasterLeft.getMotorOutputPercent();
-  }
+        elevatorMaster.configPeakOutputForward(ElevatorConst.fwdPeakOutput);
+        elevatorMaster.configPeakOutputReverse(ElevatorConst.revPeakOutput);
 
+        elevatorMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, ElevatorConst.kPIDLoopID, ElevatorConst.timeout);
+
+        elevatorMaster.config_kP(kPIDLoopID, kP);
+        elevatorMaster.config_kI(kPIDLoopID, kI);
+        elevatorMaster.config_kD(kPIDLoopID, kD);
+        elevatorMaster.config_kF(kPIDLoopID, kF);
+
+        elevatorMaster.setNeutralMode(NeutralMode.Brake);
+
+        elevatorMaster.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, ElevatorConst.timeout);
+
+        targetHeight = height;
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Ground angle: ", RobotContainer.navX.getAngle());
+    }
+
+    //Getter Methods
+    public static double getTargetHeight() {
+        return targetHeight;
+    }
+
+    public static double getMotorSpeed() {
+        return elevatorMaster.getMotorOutputPercent();
+    }
+
+    //Setter Methods
+    public static void setElevatorSpeed(double speed) {
+        elevatorMaster.set(ControlMode.PercentOutput, speed);
+    }
+
+    //Other Methods
+    public static void getToHeight(double height) {
+
+    }
 }
+
