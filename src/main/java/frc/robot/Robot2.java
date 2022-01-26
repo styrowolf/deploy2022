@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.constants.DriveConst;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -58,6 +62,14 @@ public class Robot2 extends TimedRobot {
     encoder.reset();
     leftMaster.setSelectedSensorPosition(0);
     rightMaster.setSelectedSensorPosition(0);
+
+    rightMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
+    DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
+    rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
+  
+    leftMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
+    DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
+    leftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
   }
 
   @Override
