@@ -7,7 +7,7 @@ public class DriveConst {
   //CTRE SRX Mag Encoder
   //
  
-  public static final int PID_LOOP_ID = 0; 
+  public static final int PID_LOOP_ID = 0; // 0 olmazsa 1
   public static final int TIMEOUT = 30; // in ms
   public static final int ENCODER_CPR = 2048;
 
