@@ -27,6 +27,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private CommandScheduler m_commandScheduler = CommandScheduler.getInstance();
 
+  //test
+  private final double kDriveTick2Feet = 1.0 / 128 * 6 * Math.PI / 12;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -50,6 +53,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("encoder value (left)", RobotContainer.drive.leftMaster.getSelectedSensorPosition() * kDriveTick2Feet);
+    SmartDashboard.putNumber("encoder value (right)", RobotContainer.drive.rightMaster.getSelectedSensorPosition() * kDriveTick2Feet);
     m_commandScheduler.run();
   }
 
