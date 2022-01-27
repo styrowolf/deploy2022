@@ -61,7 +61,10 @@ public class Drive extends SubsystemBase {
 
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
+
     RobotContainer.navX.reset();
+    RobotContainer.navX.calibrate();
+    
     odometry = new DifferentialDriveOdometry(RobotContainer.navX.getRotation2d());
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
