@@ -34,6 +34,10 @@ public abstract class Controller {
     public double getDriveRotation() {
         return 0;
     }
+
+    public boolean activateFailsafe() {
+        return false;
+    }
 }
 
 class PSController extends Controller {
@@ -52,6 +56,14 @@ class PSController extends Controller {
     @Override
     public double getDriveRotation() {
         return controller.getRightX();
+    }
+
+    @Override
+    public boolean activateFailsafe() {
+        return controller.getL1Button()
+            && controller.getR1Button()
+            && controller.getL2Button()
+            && controller.getR2Button();
     }
 }
 
@@ -72,6 +84,14 @@ class XController extends Controller {
     public double getDriveRotation() {
         return controller.getRightX();
     }
+
+    @Override
+    public boolean activateFailsafe() {
+        return controller.getLeftStickButton()
+            && controller.getRightStickButton()
+            && controller.getLeftBumper()
+            && controller.getRightBumper();
+    }
 }
 
 class JoystickController extends Controller {
@@ -91,4 +111,10 @@ class JoystickController extends Controller {
     public double getDriveRotation() {
         return controller.getX();
     }
+
+    public boolean activateFailsafe() {
+        return controller.getTrigger()
+            && controller.getTop();
+    }
+
 }

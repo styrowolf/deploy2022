@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.Failsafe;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,6 +29,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private CommandScheduler m_commandScheduler = CommandScheduler.getInstance();
 
+  private Failsafe fs;
+
   //test
   private final double kDriveTick2Feet = 1.0 / 128 * 6 * Math.PI / 12;
 
@@ -39,6 +43,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    fs = new Failsafe(m_robotContainer.controller::activateFailsafe);
 
     // no idea if its optional or not
     // m_commandScheduler.registerSubsystem(m_robotContainer.drive);
@@ -53,6 +59,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    fs.checkAndExit();
     SmartDashboard.putNumber("encoder value (left)", RobotContainer.drive.leftMaster.getSelectedSensorPosition() * kDriveTick2Feet);
     SmartDashboard.putNumber("encoder value (right)", RobotContainer.drive.rightMaster.getSelectedSensorPosition() * kDriveTick2Feet);
     m_commandScheduler.run();
@@ -117,4 +124,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+
+  // extras: try if they work
+  /*
+  @Override
+  public boolean isDisabled() {
+    // TODO Auto-generated method stub
+    return super.isDisabled() || fs.check();
+  }
+  */
 }
