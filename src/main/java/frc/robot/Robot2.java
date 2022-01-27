@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -52,13 +53,14 @@ public class Robot2 extends TimedRobot {
 
     MotorControllerGroup rightMotors = new MotorControllerGroup(rightMaster, rightSlave1, rightSlave2);
     MotorControllerGroup leftMotors = new MotorControllerGroup(leftMaster, leftSlave1, leftSlave2);
-  private Joystick joy1 = new Joystick(0);
+  private PS4Controller joy1 = new PS4Controller(0);
 
   private Encoder encoder = new Encoder(0, 1, false, EncodingType.k4X);
   private final double kDriveTick2Feet = 1.0 / 128 * 6 * Math.PI / 12;
 
   @Override
   public void robotInit() {
+    leftMotors.setInverted(true);
     encoder.reset();
     leftMaster.setSelectedSensorPosition(0);
     rightMaster.setSelectedSensorPosition(0);
@@ -103,9 +105,9 @@ public class Robot2 extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // get joystick command
-    if (joy1.getRawButton(1)) {
-        setpoint = 10;
-    } else if (joy1.getRawButton(2)) {
+    if (joy1.getCrossButton()) {
+        setpoint = 1;
+    } else if (joy1.getCircleButton()) {
         setpoint = 0;
     }
   
