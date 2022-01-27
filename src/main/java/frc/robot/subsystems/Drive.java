@@ -50,7 +50,7 @@ public class Drive extends SubsystemBase {
   public Drive() {
 
     leftMotors.setInverted(true);
-
+    
     rightMaster.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 
       DriveConst.PID_LOOP_ID, DriveConst.TIMEOUT);
     rightMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, DriveConst.TIMEOUT);
@@ -62,10 +62,12 @@ public class Drive extends SubsystemBase {
     turnController.enableContinuousInput(-180, 180);
     turnController.setTolerance(DriveConst.ANGLE_TOLERANCE);
 
+    /*
     RobotContainer.navX.reset();
     RobotContainer.navX.calibrate();
-    
+
     odometry = new DifferentialDriveOdometry(RobotContainer.navX.getRotation2d());
+    */
 
     setMaxOutput(DriveConst.MAX_DRIVE_OUTPUT);
 
@@ -80,7 +82,9 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Right Wheel velocity;", toMeters(getEncoderVel(rightMaster)));
     SmartDashboard.putNumber("Left Wheel velocity;", toMeters(getEncoderVel(leftMaster)));
 
+    /*
     odometry.update(RobotContainer.navX.getRotation2d(), getEncoderPos(leftMaster), getEncoderPos(rightMaster));
+    */
   }
   
   //
@@ -105,9 +109,11 @@ public class Drive extends SubsystemBase {
     differentialDrive.feed();
   }
 
+  /*
   public void PIDTurn(double rotSpeed, double targetAngle) {
     arcadeDrive(rotSpeed, MathUtil.clamp(turnController.calculate(getHeading(), targetAngle), -0.8, 0.8));
   }
+  */
   
   //
   //Resets
@@ -123,9 +129,11 @@ public class Drive extends SubsystemBase {
     leftMaster.setSelectedSensorPosition(0);
   }
 
+  /*
   public void zeroHeading() {
     RobotContainer.navX.reset();
   }
+  */
 
   //
   //Getter Commands
@@ -153,14 +161,19 @@ public class Drive extends SubsystemBase {
   }
   
   /* in degrees */
+  /*
   public double getHeading() {
     return RobotContainer.navX.getRotation2d().getDegrees();
   }
+  */
+  
   
   /* in degrees per second */
+  /*
   public double getTurnRate() {
     return -RobotContainer.navX.getRate();
   }
+  */
 
   //
   //Conversion Methods

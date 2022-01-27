@@ -13,7 +13,7 @@ public class RobotContainer {
 
     public static Controller controller = Controller.getPS4Controller(0);
     public static Drive drive = new Drive();
-    public static AHRS navX = new AHRS(RobotMap.navX);
+    //public static AHRS navX = new AHRS(RobotMap.navX);
 
     SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
