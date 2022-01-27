@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.*;
+import frc.robot.teleop.TeleopDrive;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -18,7 +19,7 @@ public class RobotContainer {
     SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
     private RobotContainer() {
-
+        drive.setDefaultCommand(new TeleopDrive());
     }
 
     //Getters

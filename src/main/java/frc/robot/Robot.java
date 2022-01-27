@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Failsafe;
+import frc.robot.teleop.TeleopDrive;
 
 
 /**
@@ -60,8 +61,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     fs.checkAndExit();
-    SmartDashboard.putNumber("encoder value (left)", RobotContainer.drive.leftMaster.getSelectedSensorPosition() * kDriveTick2Feet);
-    SmartDashboard.putNumber("encoder value (right)", RobotContainer.drive.rightMaster.getSelectedSensorPosition() * kDriveTick2Feet);
+    //SmartDashboard.putNumber("encoder value (left)", RobotContainer.drive.leftMaster.getSelectedSensorPosition() * kDriveTick2Feet);
+    //SmartDashboard.putNumber("encoder value (right)", RobotContainer.drive.rightMaster.getSelectedSensorPosition() * kDriveTick2Feet);
     m_commandScheduler.run();
   }
 
